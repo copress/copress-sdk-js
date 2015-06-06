@@ -1,6 +1,6 @@
 {
   "name": "sycle-codegen-rest-js",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Sycle javascript library codegen for Rest API",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,6 @@
   "homepage": "https://github.com/sycle/sycle-codegen-rest-js",
   "dependencies": {
     "js-beautify": "^1.5.6",
-    "jshint": "^2.5.3",
     "lodash": "^3.9.3",
     "sycle-express-rest": "sycle/sycle-express-rest",
     "temblate": "latest"
@@ -44,12 +43,10 @@
     "karma-mocha-reporter": "^1.0.2",
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-requirejs": "^0.2.2",
-    "lodash": "^3.9.3",
     "mocha": "^2.2.5",
     "morgan": "^1.5",
     "requirejs": "^2.1.18",
     "sycle-core": "sycle/sycle-core",
-    "sycle-express-rest": "sycle/sycle-express-rest",
     "sycle-express-veriuser": "sycle/sycle-express-veriuser",
     "syclify": "sycle/syclify"
   }
