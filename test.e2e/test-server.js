@@ -82,7 +82,6 @@ app.post('/setup', function (req, res, next) {
 
     sapp.disable('model public');
     sapp.set('auth', opts.enableAuth);
-//    classic(sapp);
 
     sapp.boot(function (err) {
         if (err) {

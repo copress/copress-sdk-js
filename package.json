@@ -1,6 +1,6 @@
 {
   "name": "sycle-codegen-rest-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sycle javascript library codegen for Rest API",
   "main": "index.js",
   "scripts": {
@@ -46,7 +46,6 @@
     "mocha": "^2.2.5",
     "morgan": "^1.5",
     "requirejs": "^2.1.18",
-    "sycle-core": "sycle/sycle-core",
     "sycle-express-veriuser": "sycle/sycle-express-veriuser",
     "syclify": "sycle/syclify"
   }
