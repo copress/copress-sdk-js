@@ -5,7 +5,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
         describe('MyModel $resource', function () {
             var $injector, MyModel;
             before(function () {
-                return given.servicesForSiraApp({
+                return given.servicesForSycleApp({
                     models: {
                         MyModel: {
                             public: true,
@@ -126,7 +126,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
         describe('$resource for model with funky name', function () {
             var $injector;
             before(function () {
-                return given.servicesForSiraApp(
+                return given.servicesForSycleApp(
                     {
                         models: {
                             'lower-case-not-an-identifier': { public: true }
@@ -144,8 +144,8 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
 
         describe('with authentication', function () {
             var getNew, createInjector, $injector, User;
-            before(function setupSiraService() {
-                return given.servicesForSiraApp(
+            before(function setupSycleService() {
+                return given.servicesForSycleApp(
                     {
                         name: 'with authentication',
                         models: {
@@ -204,17 +204,17 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
                         return User.logout().$promise;
                     })
                     .then(function () {
-                        // NOTE(bajtos) This test is checking the SiraAuth.accessToken
+                        // NOTE(bajtos) This test is checking the SycleAuth.accessToken
                         // property, because any HTTP request will fail regardless of the
                         // Authorization header value, since the token was invalidated on
                         // the server side too.
-                        var auth = $injector.get('SiraAuth');
-                        expect(auth.accessTokenId, 'accessTokenId').to.equal(null);
+                        var auth = $injector.get('SycleAuth');
+                        expect(auth.token, 'token').to.equal(null);
                         expect(auth.currentUserId, 'currentUserId').to.equal(null);
 
                         // Check that localStorage was cleared too.
-                        auth = getNew('SiraAuth');
-                        expect(auth.accessTokenId, 'stored accessTokenId').to.equal(null);
+                        auth = getNew('SycleAuth');
+                        expect(auth.token, 'stored token').to.equal(null);
                         expect(auth.currentUserId, 'stored currentUserId').to.equal(null);
                     })
                     .catch(util.throwHttpError);
@@ -295,7 +295,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
                 return givenLoggedInUser()
                     .then(function () {
                         // clear the data stored by login
-                        $injector.get('SiraAuth').currentUserData = null;
+                        $injector.get('SycleAuth').currentUserData = null;
                         return User.getCurrent().$promise;
                     })
                     .then(function (user) {

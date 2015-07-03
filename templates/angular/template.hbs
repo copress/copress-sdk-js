@@ -35,7 +35,7 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
         TODO(bajtos) provide an example of performing basic CrUD operations,
         including filter/where find query
     ~}}
-    module.factory({{q className}}, ['SiraResource', 'SiraAuth', '$injector', function(Resource, SiraAuth, $injector) {
+    module.factory({{q className}}, ['SycleResource', 'SycleAuth', '$injector', function(Resource, SycleAuth, $injector) {
     {{! Constructor arguments are hardcoded for now. We should generate it from sharedCtor.accepts instead. ~}}
     var R = Resource(urlBase + {{q respath}}, { 'id': '@id' }, {
     {{#forEach actions}}
@@ -58,9 +58,9 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
             interceptor: {
                 response: function(response) {
                     var accessToken = response.data;
-                    SiraAuth.setUser(accessToken.id, accessToken.userId, accessToken.user);
-                    SiraAuth.rememberMe = response.config.params.rememberMe !== false;
-                    SiraAuth.save();
+                    SycleAuth.setUser(accessToken.token, accessToken.userId, accessToken.user);
+                    SycleAuth.rememberMe = response.config.params.rememberMe !== false;
+                    SycleAuth.save();
                     return response.resource;
                 }
             }
@@ -69,8 +69,8 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
             ,
             interceptor: {
                 response: function(response) {
-                    SiraAuth.clearUser();
-                    SiraAuth.save();
+                    SycleAuth.clearUser();
+                    SycleAuth.save();
                     return response.resource;
                 }
             }
@@ -104,14 +104,14 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
             method: "GET",
             params: {
                 id: function() {
-                    var id = SiraAuth.currentUserId;
+                    var id = SycleAuth.currentUserId;
                     if (id == null) id = '__anonymous__';
                     return id;
                 }
             },
             interceptor: {
                 response: function(response) {
-                    SiraAuth.currentUserData = response.data;
+                    SycleAuth.currentUserData = response.data;
                     return response.resource;
                 }
             },
@@ -145,7 +145,7 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
         * @return {Object} A {{className}} instance.
         */
         R.getCachedCurrent = function() {
-            var data = SiraAuth.currentUserData;
+            var data = SycleAuth.currentUserData;
             return data ? new R(data) : null;
         };
 
@@ -168,7 +168,7 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
         * @return {Object} Id of the currently logged-in user or null.
         */
         R.getCurrentId = function() {
-            return SiraAuth.currentUserId;
+            return SycleAuth.currentUserId;
         };
     {{/if}}
         return R;
@@ -177,10 +177,10 @@ var module = angular.module({{q moduleName}}, ['ngResource']);
 
 
 module
-    .factory('SiraAuth', function() {
-        var props = ['accessTokenId', 'currentUserId'];
+    .factory('SycleAuth', function() {
+        var props = ['token', 'currentUserId'];
 
-        function SiraAuth() {
+        function SycleAuth() {
             var self = this;
             props.forEach(function(name) {
                 self[name] = load(name);
@@ -189,7 +189,7 @@ module
             this.currentUserData = null;
         }
 
-        SiraAuth.prototype.save = function() {
+        SycleAuth.prototype.save = function() {
             var self = this;
             var storage = this.rememberMe ? localStorage : sessionStorage;
             props.forEach(function(name) {
@@ -197,19 +197,19 @@ module
             });
         };
 
-        SiraAuth.prototype.setUser = function(accessTokenId, userId, userData) {
-            this.accessTokenId = accessTokenId;
+        SycleAuth.prototype.setUser = function(token, userId, userData) {
+            this.token = token;
             this.currentUserId = userId;
             this.currentUserData = userData;
         };
 
-        SiraAuth.prototype.clearUser = function() {
-            this.accessTokenId = null;
+        SycleAuth.prototype.clearUser = function() {
+            this.token = null;
             this.currentUserId = null;
             this.currentUserData = null;
         };
 
-        return new SiraAuth();
+        return new SycleAuth();
 
         // Note: LocalStorage converts the value to string
         // We are using empty string as a marker for null/undefined values.
@@ -225,14 +225,14 @@ module
         }
     })
     .config(['$httpProvider', function($httpProvider) {
-        $httpProvider.interceptors.push('SiraAuthRequestInterceptor');
+        $httpProvider.interceptors.push('SycleAuthRequestInterceptor');
     }])
-    .factory('SiraAuthRequestInterceptor', [ '$q', 'SiraAuth',
-        function($q, SiraAuth) {
+    .factory('SycleAuthRequestInterceptor', [ '$q', 'SycleAuth',
+        function($q, SycleAuth) {
             return {
                 'request': function(config) {
-                    if (SiraAuth.accessTokenId) {
-                        config.headers.authorization = SiraAuth.accessTokenId;
+                    if (SycleAuth.token) {
+                        config.headers.authorization = SycleAuth.token;
                     } else if (config.__isGetCurrentUser__) {
                         // Return a stub 401 error for User.getCurrent() when
                         // there is no user logged in
@@ -249,7 +249,7 @@ module
             }
         }
     ])
-    .factory('SiraResource', [ '$resource', function($resource) {
+    .factory('SycleResource', [ '$resource', function($resource) {
         return function(url, params, actions) {
             var resource = $resource(url, params, actions);
 

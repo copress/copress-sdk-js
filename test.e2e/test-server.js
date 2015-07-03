@@ -41,7 +41,7 @@ app.use(morgan('dev'));
 /*!
  Sample request
  {
- name: 'siras',
+ name: 'sycles',
  models: {
  Customer: {
  properties: {

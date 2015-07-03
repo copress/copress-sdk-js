@@ -43,7 +43,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
      *
      * Example:
      * ```js
-     * given.servicesForSiraApp({
+     * given.servicesForSycleApp({
    *   models: // etc.
    * }).then(function($injector) {
    *   $injector.invoke(function(Customer) {
@@ -52,7 +52,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
    * });
      * ```
      */
-    given.servicesForSiraApp = function (options, cb) {
+    given.servicesForSycleApp = function (options, cb) {
         options.name = generateUniqueServiceName(options.name);
 
         var promise = callSetup(options)
@@ -84,7 +84,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
     var namesUsed = {};
 
     function generateUniqueServiceName(base) {
-        if (!base) base = getFullSpecName() || 'siraServices';
+        if (!base) base = getFullSpecName() || 'sycleServices';
 
         var candidate = base;
         var counter = 0;
