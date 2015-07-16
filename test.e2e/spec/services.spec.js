@@ -5,7 +5,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
         describe('MyModel $resource', function () {
             var $injector, MyModel;
             before(function () {
-                return given.servicesForSycleApp({
+                return given.servicesForCopressApp({
                     models: {
                         MyModel: {
                             public: true,
@@ -126,7 +126,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
         describe('$resource for model with funky name', function () {
             var $injector;
             before(function () {
-                return given.servicesForSycleApp(
+                return given.servicesForCopressApp(
                     {
                         models: {
                             'lower-case-not-an-identifier': { public: true }
@@ -144,8 +144,8 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
 
         describe('with authentication', function () {
             var getNew, createInjector, $injector, User;
-            before(function setupSycleService() {
-                return given.servicesForSycleApp(
+            before(function setupCopressService() {
+                return given.servicesForCopressApp(
                     {
                         name: 'with authentication',
                         models: {
@@ -204,16 +204,16 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
                         return User.logout().$promise;
                     })
                     .then(function () {
-                        // NOTE(bajtos) This test is checking the SycleAuth.accessToken
+                        // NOTE(bajtos) This test is checking the CopressAuth.accessToken
                         // property, because any HTTP request will fail regardless of the
                         // Authorization header value, since the token was invalidated on
                         // the server side too.
-                        var auth = $injector.get('SycleAuth');
+                        var auth = $injector.get('CopressAuth');
                         expect(auth.token, 'token').to.equal(null);
                         expect(auth.currentUserId, 'currentUserId').to.equal(null);
 
                         // Check that localStorage was cleared too.
-                        auth = getNew('SycleAuth');
+                        auth = getNew('CopressAuth');
                         expect(auth.token, 'stored token').to.equal(null);
                         expect(auth.currentUserId, 'stored currentUserId').to.equal(null);
                     })
@@ -295,7 +295,7 @@ define(['angular', 'given', 'util'], function (angular, given, util) {
                 return givenLoggedInUser()
                     .then(function () {
                         // clear the data stored by login
-                        $injector.get('SycleAuth').currentUserData = null;
+                        $injector.get('CopressAuth').currentUserData = null;
                         return User.getCurrent().$promise;
                     })
                     .then(function (user) {

@@ -43,7 +43,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
      *
      * Example:
      * ```js
-     * given.servicesForSycleApp({
+     * given.servicesForCopressApp({
    *   models: // etc.
    * }).then(function($injector) {
    *   $injector.invoke(function(Customer) {
@@ -52,7 +52,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
    * });
      * ```
      */
-    given.servicesForSycleApp = function (options, cb) {
+    given.servicesForCopressApp = function (options, cb) {
         options.name = generateUniqueServiceName(options.name);
 
         var promise = callSetup(options)
@@ -64,7 +64,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
                 return function createTestInjector() {
                     var injector = angular.injector(['ng', 'ngMockE2E', options.name]);
                     // Setup the mocked http provider to pass all $http requests
-                    // to our Sycle server
+                    // to our Copress server
                     var $httpBackend = injector.get('$httpBackend');
                     ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'].forEach(function (method) {
                         $httpBackend.when(method).passThrough();
@@ -125,7 +125,7 @@ define(['angular', 'angularMocks', 'angularResource'], function (angular) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState != 4) return;
             if (xhr.status != 200) {
-                deferred.reject(new Error('Cannot build Sycle App: ' + xhr.status));
+                deferred.reject(new Error('Cannot build Copress App: ' + xhr.status));
             }
             deferred.resolve(JSON.parse(xhr.responseText));
         };

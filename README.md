@@ -1,4 +1,4 @@
-sycle-codegen-rest-js
+sycle-sdk-js
 ====================
 
-Sycle javascript library codegen for Rest API
+Service for auto-generating Angular $resource services and other templated js sdk for Copress/Sycle
