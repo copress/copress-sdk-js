@@ -1,5 +1,5 @@
 {
-  "name": "copress-codegen-rest-js",
+  "name": "copress-sdk-js",
   "version": "0.2.0",
   "description": "Service for auto-generating Angular $resource services and other templated js sdk for Copress/Sycle",
   "main": "index.js",
